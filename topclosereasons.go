@@ -1,0 +1,61 @@
+package analytics
+
+import (
+	"context"
+)
+
+func (c *Client) GetTopCloseReasons(guildId uint64, panelId int) ([]string, error) {
+	query := `
+SELECT close_reason
+FROM analytics.top_close_reasons
+WHERE guild_id = ? AND panel_id = ?
+ORDER BY ranking ASC
+LIMIT 10`
+
+	rows, err := c.client.Query(context.Background(), query, guildId, panelId)
+	if err != nil {
+		return nil, err
+	}
+
+	reasons := make([]string, 10)
+	i := 0
+	for rows.Next() {
+		var reason string
+		if err := rows.Scan(&reason); err != nil {
+			return nil, err
+		}
+
+		reasons[i] = reason
+		i++
+	}
+
+	return reasons[:i], nil
+}
+
+func (c *Client) GetTopCloseReasonsWithPrefix(guildId uint64, panelId int, prefix string) ([]string, error) {
+	query := `
+SELECT close_reason
+FROM analytics.top_close_reasons
+WHERE guild_id = ? AND panel_id = ? AND LOWER(close_reason) LIKE LOWER(?) || '%'
+ORDER BY ranking ASC
+LIMIT 10`
+
+	rows, err := c.client.Query(context.Background(), query, guildId, panelId, prefix)
+	if err != nil {
+		return nil, err
+	}
+
+	reasons := make([]string, 10)
+	i := 0
+	for rows.Next() {
+		var reason string
+		if err := rows.Scan(&reason); err != nil {
+			return nil, err
+		}
+
+		reasons[i] = reason
+		i++
+	}
+
+	return reasons[:i], nil
+}
