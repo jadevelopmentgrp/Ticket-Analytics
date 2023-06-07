@@ -16,7 +16,7 @@ func NewClient(client clickhouse.Conn) *Client {
 	}
 }
 
-func Connect(address string, connections int, database, username, password string, readTimeout time.Duration) (*Client, error) {
+func Connect(address string, connections int, database, username, password string, readTimeout time.Duration) *Client {
 	conn, err := clickhouse.Open(&clickhouse.Options{
 		Addr: []string{address},
 		Auth: clickhouse.Auth{
@@ -43,15 +43,15 @@ func Connect(address string, connections int, database, username, password strin
 		},
 	})
 
-	if err != nil {
-		return nil, err
-	}
-
-	if err := conn.Ping(context.Background()); err != nil {
-		return nil, err
+	if err != nil { // Infallible
+		panic(err)
 	}
 
 	return &Client{
 		client: conn,
-	}, nil
+	}
+}
+
+func (c *Client) Ping(context context.Context) error {
+	return c.client.Ping(context)
 }
