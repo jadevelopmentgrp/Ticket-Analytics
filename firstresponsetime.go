@@ -15,16 +15,25 @@ FROM analytics.first_response_time_guild
 WHERE guild_id = ?
 GROUP BY guild_id`
 
-	// Values in seconds
-	var allTime int64
-	var monthly, weekly *int64
-	if err := c.client.QueryRow(context, query, guildId).Scan(&allTime, &monthly, &weekly); err != nil {
+	rows, err := c.client.Query(context, query, guildId)
+	if err != nil {
 		return TripleWindow{}, err
 	}
 
-	return TripleWindow{
-		AllTime: time.Duration(allTime) * time.Second,
-		Monthly: mapNullableSecondsToDuration(monthly),
-		Weekly:  mapNullableSecondsToDuration(weekly),
-	}, nil
+	if rows.Next() {
+		// Values in seconds
+		var allTime int64
+		var monthly, weekly *int64
+		if err := rows.Scan(&allTime, &monthly, &weekly); err != nil {
+			return TripleWindow{}, nil
+		}
+
+		return TripleWindow{
+			AllTime: ptr(time.Duration(allTime) * time.Second),
+			Monthly: mapNullableSecondsToDuration(monthly),
+			Weekly:  mapNullableSecondsToDuration(weekly),
+		}, nil
+	} else {
+		return blankTripleWindow(), nil
+	}
 }

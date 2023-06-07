@@ -16,3 +16,7 @@ func mapNullableSecondsToDuration(seconds *int64) *time.Duration {
 		return time.Duration(secs) * time.Second
 	})
 }
+
+func ptr[T any](v T) *T {
+	return &v
+}
