@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-func (c *Client) GetFirstResponseTimeStats(guildId uint64) (TripleWindow, error) {
+func (c *Client) GetFirstResponseTimeStats(context context.Context, guildId uint64) (TripleWindow, error) {
 	query := `
 SELECT
     avgMerge(all_time),
@@ -18,7 +18,7 @@ GROUP BY guild_id`
 	// Values in seconds
 	var allTime int64
 	var monthly, weekly *int64
-	if err := c.client.QueryRow(context.Background(), query, guildId).Scan(&allTime, &monthly, &weekly); err != nil {
+	if err := c.client.QueryRow(context, query, guildId).Scan(&allTime, &monthly, &weekly); err != nil {
 		return TripleWindow{}, err
 	}
 

@@ -4,7 +4,7 @@ import (
 	"context"
 )
 
-func (c *Client) GetTopCloseReasons(guildId uint64, panelId int) ([]string, error) {
+func (c *Client) GetTopCloseReasons(context context.Context, guildId uint64, panelId int) ([]string, error) {
 	query := `
 SELECT close_reason
 FROM analytics.top_close_reasons
@@ -12,7 +12,7 @@ WHERE guild_id = ? AND panel_id = ?
 ORDER BY ranking ASC
 LIMIT 10`
 
-	rows, err := c.client.Query(context.Background(), query, guildId, panelId)
+	rows, err := c.client.Query(context, query, guildId, panelId)
 	if err != nil {
 		return nil, err
 	}
@@ -32,7 +32,7 @@ LIMIT 10`
 	return reasons[:i], nil
 }
 
-func (c *Client) GetTopCloseReasonsWithPrefix(guildId uint64, panelId int, prefix string) ([]string, error) {
+func (c *Client) GetTopCloseReasonsWithPrefix(context context.Context, guildId uint64, panelId int, prefix string) ([]string, error) {
 	query := `
 SELECT close_reason
 FROM analytics.top_close_reasons
@@ -40,7 +40,7 @@ WHERE guild_id = ? AND panel_id = ? AND LOWER(close_reason) LIKE LOWER(?) || '%'
 ORDER BY ranking ASC
 LIMIT 10`
 
-	rows, err := c.client.Query(context.Background(), query, guildId, panelId, prefix)
+	rows, err := c.client.Query(context, query, guildId, panelId, prefix)
 	if err != nil {
 		return nil, err
 	}
