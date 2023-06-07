@@ -27,6 +27,7 @@ func Connect(address string, connections int, database, username, password strin
 		Compression: &clickhouse.Compression{
 			Method: clickhouse.CompressionLZ4,
 		},
+		DialTimeout:  readTimeout,
 		MaxOpenConns: connections,
 		MaxIdleConns: connections,
 		ReadTimeout:  readTimeout,
