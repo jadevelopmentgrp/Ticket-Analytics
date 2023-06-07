@@ -22,8 +22,8 @@ GROUP BY guild_id`
 
 	if rows.Next() {
 		// Values in seconds
-		var allTime int64
-		var monthly, weekly *int64
+		var allTime float64
+		var monthly, weekly *float64
 		if err := rows.Scan(&allTime, &monthly, &weekly); err != nil {
 			return TripleWindow{}, err
 		}

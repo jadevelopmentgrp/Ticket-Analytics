@@ -11,8 +11,8 @@ func mapNotNull[T any, U any](v *T, f func(T) U) *U {
 	return &mapped
 }
 
-func mapNullableSecondsToDuration(seconds *int64) *time.Duration {
-	return mapNotNull(seconds, func(secs int64) time.Duration {
+func mapNullableSecondsToDuration[T int64 | float64](seconds *T) *time.Duration {
+	return mapNotNull(seconds, func(secs T) time.Duration {
 		return time.Duration(secs) * time.Second
 	})
 }
