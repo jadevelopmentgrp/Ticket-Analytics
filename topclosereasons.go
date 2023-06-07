@@ -4,7 +4,7 @@ import (
 	"context"
 )
 
-func (c *Client) GetTopCloseReasons(context context.Context, guildId uint64, panelId int) ([]string, error) {
+func (c *Client) GetTopCloseReasons(context context.Context, guildId uint64, panelId *int) ([]string, error) {
 	query := `
 SELECT close_reason
 FROM analytics.top_close_reasons
@@ -32,7 +32,7 @@ LIMIT 10`
 	return reasons[:i], nil
 }
 
-func (c *Client) GetTopCloseReasonsWithPrefix(context context.Context, guildId uint64, panelId int, prefix string) ([]string, error) {
+func (c *Client) GetTopCloseReasonsWithPrefix(context context.Context, guildId uint64, panelId *int, prefix string) ([]string, error) {
 	query := `
 SELECT close_reason
 FROM analytics.top_close_reasons
