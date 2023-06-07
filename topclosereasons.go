@@ -17,6 +17,8 @@ LIMIT 10`
 		return nil, err
 	}
 
+	defer rows.Close()
+
 	reasons := make([]string, 10)
 	i := 0
 	for rows.Next() {
@@ -45,6 +47,8 @@ LIMIT 10`
 		return nil, err
 	}
 
+	defer rows.Close()
+	
 	reasons := make([]string, 10)
 	i := 0
 	for rows.Next() {

@@ -20,6 +20,7 @@ GROUP BY guild_id`
 		return TripleWindow{}, err
 	}
 
+	defer rows.Close()
 	if rows.Next() {
 		// Values in seconds
 		var allTime float64
