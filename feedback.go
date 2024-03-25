@@ -22,8 +22,8 @@ func (c *Client) GetAverageFeedbackRatingGuild(ctx context.Context, guildId uint
 	return rating, nil
 }
 
-func (c *Client) GetFeedbackCountGuild(ctx context.Context, guildId uint64) (int, error) {
-	var count int
+func (c *Client) GetFeedbackCountGuild(ctx context.Context, guildId uint64) (uint64, error) {
+	var count uint64
 	if err := c.client.QueryRow(ctx, queryGetFeedbackCountGuild, guildId).Scan(&count); err != nil {
 		return 0, err
 	}

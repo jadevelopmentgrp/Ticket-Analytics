@@ -13,8 +13,8 @@ var (
 	queryGetTotalOpenTicketCount string
 )
 
-func (c *Client) GetTotalTicketCount(ctx context.Context, guildId uint64) (int, error) {
-	var count int
+func (c *Client) GetTotalTicketCount(ctx context.Context, guildId uint64) (uint64, error) {
+	var count uint64
 	if err := c.client.QueryRow(ctx, queryGetTotalTicketCount, guildId).Scan(&count); err != nil {
 		return 0, err
 	}
@@ -22,8 +22,8 @@ func (c *Client) GetTotalTicketCount(ctx context.Context, guildId uint64) (int, 
 	return count, nil
 }
 
-func (c *Client) GetTotalOpenTicketCount(ctx context.Context, guildId uint64) (int, error) {
-	var count int
+func (c *Client) GetTotalOpenTicketCount(ctx context.Context, guildId uint64) (uint64, error) {
+	var count uint64
 	if err := c.client.QueryRow(ctx, queryGetTotalOpenTicketCount, guildId).Scan(&count); err != nil {
 		return 0, err
 	}
