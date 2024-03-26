@@ -8,7 +8,7 @@ import (
 
 type CountOnDate struct {
 	Date  time.Time `json:"date"`
-	Count int       `json:"count"`
+	Count uint64    `json:"count"`
 }
 
 var (
