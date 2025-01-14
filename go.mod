@@ -1,4 +1,4 @@
-module github.com/jadevelopmentgrp/Ticket-Analytics
+module github.com/jadevelopmentgrp/Tickets-Analytics
 
 go 1.18
 
