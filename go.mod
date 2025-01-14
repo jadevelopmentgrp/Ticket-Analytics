@@ -1,4 +1,4 @@
-module github.com/TicketsBot/analytics-client
+module github.com/jadevelopmentgrp/Ticket-Analytics
 
 go 1.18
 
